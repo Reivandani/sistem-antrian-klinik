@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "601746514629",
+    "project_id": "sistem-antrean-klinik-7a8cc",
+    "storage_bucket": "sistem-antrean-klinik-7a8cc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601746514629:android:6ae5ab3fa4720abb9286ac",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTZqxinHwkavWHyZ5dE0OwnRFp1m4lkbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
