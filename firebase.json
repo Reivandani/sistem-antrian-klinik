@@ -1,1 +1,56 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"sistem-antrean-klinik-7a8cc","appId":"1:601746514629:android:6ae5ab3fa4720abb9286ac","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"sistem-antrean-klinik-7a8cc","configurations":{"android":"1:601746514629:android:6ae5ab3fa4720abb9286ac","ios":"1:601746514629:ios:3b11edbc807a71ee9286ac","macos":"1:601746514629:ios:55b527d1b2acef4a9286ac","web":"1:601746514629:web:25c5072eab1a95bd9286ac","windows":"1:601746514629:web:d76d0a67bc9cf6929286ac"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "sistem-antrean-klinik-7a8cc",
+          "appId": "1:601746514629:android:6ae5ab3fa4720abb9286ac",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "sistem-antrean-klinik-7a8cc",
+          "configurations": {
+            "android": "1:601746514629:android:6ae5ab3fa4720abb9286ac",
+            "ios": "1:601746514629:ios:3b11edbc807a71ee9286ac",
+            "macos": "1:601746514629:ios:55b527d1b2acef4a9286ac",
+            "web": "1:601746514629:web:25c5072eab1a95bd9286ac",
+            "windows": "1:601746514629:web:d76d0a67bc9cf6929286ac"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "disallowLegacyRuntimeConfig": true,
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
+}

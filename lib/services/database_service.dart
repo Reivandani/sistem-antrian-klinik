@@ -31,6 +31,7 @@ class DatabaseService {
       // ======================================================
       // DATA PROFIL LAINNYA
       // ======================================================
+
       'jenisKelamin': '',
       'tempatLahir': '',
       'tanggalLahir': '',
@@ -40,8 +41,22 @@ class DatabaseService {
       'fotoProfil': '',
 
       // ======================================================
+      // TOKEN FCM
+      // ======================================================
+      // Array ini digunakan untuk menyimpan token notifikasi
+      // dari berbagai perangkat milik user.
+      //
+      // Contoh:
+      // HP     -> token HP
+      // Laptop -> token browser laptop
+      //
+      // Untuk user baru, array dibuat kosong terlebih dahulu.
+      'fcmTokens': [],
+
+      // ======================================================
       // WAKTU PEMBUATAN AKUN
       // ======================================================
+
       'createdAt': FieldValue.serverTimestamp(),
     });
   }
@@ -69,12 +84,53 @@ class DatabaseService {
     }
 
     // Mengubah data Firestore menjadi Map
-    final Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+    final Map<String, dynamic> data =
+        snapshot.data() as Map<String, dynamic>;
 
     // Mengambil role dari Firestore.
     // Jika role belum ada, gunakan pasien
     // sebagai nilai default.
     return data['role'] ?? 'pasien';
+  }
+
+  // ==========================================================
+  // SIMPAN TOKEN FCM
+  // ==========================================================
+  //
+  // Token FCM digunakan Firebase Cloud Messaging (FCM)
+  // untuk mengirim notifikasi ke perangkat user.
+  //
+  // Satu user dapat memiliki lebih dari satu token karena
+  // user dapat login menggunakan beberapa perangkat.
+  //
+  // Contoh:
+  //
+  // HP:
+  // token = "token_hp"
+  //
+  // Laptop:
+  // token = "token_laptop"
+  //
+  // Firestore:
+  //
+  // fcmTokens:
+  // [
+  //   "token_hp",
+  //   "token_laptop"
+  // ]
+  //
+  // ==========================================================
+
+  static Future<void> simpanFcmToken({
+    required String uid,
+    required String token,
+  }) async {
+    await users.doc(uid).set(
+      {
+        'fcmTokens': FieldValue.arrayUnion([token]),
+      },
+      SetOptions(merge: true),
+    );
   }
 
   // ==========================================================

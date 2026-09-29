@@ -18,7 +18,7 @@ import '../models/poli.dart';
 class HomePage extends StatelessWidget {
   final String username;
 
-  HomePage({
+  const HomePage({
     super.key,
     required this.username,
   });

@@ -6,6 +6,7 @@ import 'register_page.dart';
 import 'admin_home_page.dart';
 
 import '../services/database_service.dart';
+import '../services/fcm_service.dart';
 
 // ======================================================
 // LOGIN PAGE
@@ -89,6 +90,10 @@ class _LoginPageState extends State<LoginPage> {
         // ==================================================
 
         final String role = await DatabaseService.ambilRole(uid);
+
+if (role != 'petugas') {
+  await FcmService.initialize();
+}
 
         // ==================================================
         // MENGAMBIL NAMA USER
