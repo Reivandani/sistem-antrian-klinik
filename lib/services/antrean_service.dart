@@ -5,9 +5,14 @@ class AntreanService {
   // COLLECTION ANTREAN
   // ============================================================
 
-  static final CollectionReference antreanCollection = FirebaseFirestore
-      .instance
-      .collection('antrean');
+  static final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  static final CollectionReference<Map<String, dynamic>>
+      antreanCollection = firestore.collection('antrean');
+
+  // Collection untuk menyimpan nomor antrean terakhir setiap poli.
+  static final CollectionReference<Map<String, dynamic>>
+      counterCollection = firestore.collection('counter_antrean');
 
   // ============================================================
   // AMBIL ANTREAN
@@ -18,25 +23,37 @@ class AntreanService {
     required String namaPoli,
     required String dokter,
   }) async {
-    // ----------------------------------------------------------
-    // MENGAMBIL SEMUA ANTREAN PADA POLI TERSEBUT
-    // ----------------------------------------------------------
+    // ID counter dibuat berdasarkan nama poli.
+    // Setiap poli memiliki penghitung nomor masing-masing.
+    final String counterId = Uri.encodeComponent(namaPoli);
 
-    final QuerySnapshot snapshot = await antreanCollection
-        .where('namaPoli', isEqualTo: namaPoli)
-        .get();
+    final DocumentReference<Map<String, dynamic>> counterRef =
+        counterCollection.doc(counterId);
 
-    // Nomor terakhir
+    // Buat ID dokumen antrean sebelum transaksi.
+    // ID ini tetap sama meskipun transaksi diulang oleh Firestore.
+    final DocumentReference<Map<String, dynamic>> antreanRef =
+        antreanCollection.doc();
+
+    // ----------------------------------------------------------
+    // MEMERIKSA NOMOR ANTREAN YANG SUDAH ADA
+    // ----------------------------------------------------------
+    //
+    // Pemeriksaan ini membantu menyesuaikan counter dengan data
+    // antrean lama yang mungkin sudah tersimpan di Firestore.
+    //
+    // Catatan: pengambilan nomor baru tetap dilakukan di dalam
+    // transaksi agar permintaan bersamaan tidak memakai nomor sama.
+
+    final QuerySnapshot<Map<String, dynamic>> snapshot =
+        await antreanCollection
+            .where('namaPoli', isEqualTo: namaPoli)
+            .get();
+
     int nomorTerakhir = 0;
 
-    // ----------------------------------------------------------
-    // MENCARI NOMOR ANTREAN TERAKHIR
-    // ----------------------------------------------------------
-
     for (final doc in snapshot.docs) {
-      final Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-
-      final String nomor = data['nomorAntrean'] ?? '';
+      final String nomor = doc.data()['nomorAntrean']?.toString() ?? '';
 
       if (nomor.startsWith('A')) {
         final int angka = int.tryParse(nomor.substring(1)) ?? 0;
@@ -48,52 +65,76 @@ class AntreanService {
     }
 
     // ----------------------------------------------------------
-    // MEMBUAT NOMOR BARU
+    // TRANSAKSI FIRESTORE
     // ----------------------------------------------------------
+    //
+    // Firestore mengatur transaksi yang mengubah counter yang sama.
+    // Jika dua pasien mengambil antrean bersamaan, transaksi yang
+    // bertabrakan akan dicoba kembali oleh Firestore.
 
-    final int nomorBaru = nomorTerakhir + 1;
+    return await firestore.runTransaction<String>((transaction) async {
+      // Baca counter nomor antrean poli.
+      final DocumentSnapshot<Map<String, dynamic>> counterSnapshot =
+          await transaction.get(counterRef);
 
-    final String nomorAntrean = 'A${nomorBaru.toString().padLeft(3, '0')}';
+      // Ambil nomor terakhir dari counter.
+      final int nomorCounter =
+          (counterSnapshot.data()?['nomorTerakhir'] as num?)?.toInt() ?? 0;
 
-    // ----------------------------------------------------------
-    // SIMPAN KE FIRESTORE
-    // ----------------------------------------------------------
+      // Bandingkan counter dengan data antrean yang sudah ada.
+      final int nomorDasar = nomorCounter > nomorTerakhir
+          ? nomorCounter
+          : nomorTerakhir;
 
-    await antreanCollection.add({
-      'uid': uid,
+      // Buat nomor berikutnya.
+      final int nomorBaru = nomorDasar + 1;
 
-      'nomorAntrean': nomorAntrean,
+      final String nomorAntrean =
+          'A${nomorBaru.toString().padLeft(3, '0')}';
 
-      'namaPoli': namaPoli,
+      // Simpan nomor terakhir ke counter poli.
+      transaction.set(counterRef, {
+        'namaPoli': namaPoli,
+        'nomorTerakhir': nomorBaru,
+        'diperbaruiPada': FieldValue.serverTimestamp(),
+      });
 
-      'dokter': dokter,
+      // Simpan data antrean pasien.
+      transaction.set(antreanRef, {
+        'uid': uid,
+        'nomorAntrean': nomorAntrean,
+        'namaPoli': namaPoli,
+        'dokter': dokter,
+        'status': 'Menunggu',
+        'waktuAmbil': FieldValue.serverTimestamp(),
+        'waktuDipanggil': null,
+        'waktuSelesai': null,
+      });
 
-      'status': 'Menunggu',
-
-      'waktuAmbil': FieldValue.serverTimestamp(),
-
-      'waktuDipanggil': null,
-
-      'waktuSelesai': null,
+      // Kembalikan nomor antrean yang berhasil dibuat.
+      return nomorAntrean;
     });
-
-    // Mengembalikan nomor antrean
-    return nomorAntrean;
   }
 
   // ============================================================
   // SEMUA ANTREAN PADA SATU POLI
   // ============================================================
 
-  static Stream<QuerySnapshot> semuaAntreanPoli(String namaPoli) {
-    return antreanCollection.where('namaPoli', isEqualTo: namaPoli).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> semuaAntreanPoli(
+    String namaPoli,
+  ) {
+    return antreanCollection
+        .where('namaPoli', isEqualTo: namaPoli)
+        .snapshots();
   }
 
   // ============================================================
   // ANTREAN PASIEN
   // ============================================================
 
-  static Stream<QuerySnapshot> antreanPasien(String uid) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> antreanPasien(
+    String uid,
+  ) {
     return antreanCollection.where('uid', isEqualTo: uid).snapshots();
   }
 
@@ -101,7 +142,9 @@ class AntreanService {
   // RIWAYAT ANTREAN PASIEN
   // ============================================================
 
-  static Stream<QuerySnapshot> riwayatAntreanPasien(String uid) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> riwayatAntreanPasien(
+    String uid,
+  ) {
     return antreanCollection.where('uid', isEqualTo: uid).snapshots();
   }
 
@@ -109,7 +152,9 @@ class AntreanService {
   // ANTREAN YANG SEDANG DIPANGGIL
   // ============================================================
 
-  static Stream<QuerySnapshot> antreanSedangDilayani(String namaPoli) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> antreanSedangDilayani(
+    String namaPoli,
+  ) {
     return antreanCollection
         .where('namaPoli', isEqualTo: namaPoli)
         .where('status', isEqualTo: 'Dipanggil')
@@ -123,7 +168,6 @@ class AntreanService {
   static Future<void> panggilAntrean(String documentId) async {
     await antreanCollection.doc(documentId).update({
       'status': 'Dipanggil',
-
       'waktuDipanggil': FieldValue.serverTimestamp(),
     });
   }
@@ -135,7 +179,6 @@ class AntreanService {
   static Future<void> selesaikanAntrean(String documentId) async {
     await antreanCollection.doc(documentId).update({
       'status': 'Selesai',
-
       'waktuSelesai': FieldValue.serverTimestamp(),
     });
   }
@@ -145,6 +188,8 @@ class AntreanService {
   // ============================================================
 
   static Future<void> batalkanAntrean(String documentId) async {
-    await antreanCollection.doc(documentId).update({'status': 'Dibatalkan'});
+    await antreanCollection.doc(documentId).update({
+      'status': 'Dibatalkan',
+    });
   }
 }

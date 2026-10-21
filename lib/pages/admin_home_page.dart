@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -6,6 +7,7 @@ import 'admin_konsultasi_page.dart';
 import 'admin_antrean_page.dart';
 import 'admin_data_pasien_page.dart';
 import 'admin_profil_page.dart';
+import 'admin_dashboard_page.dart';
 
 import '../widgets/menu_card.dart';
 
@@ -30,12 +32,9 @@ class AdminHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           'Panel Petugas Klinik',
-
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-
         backgroundColor: Colors.blue,
-
         foregroundColor: Colors.white,
 
         actions: [
@@ -45,14 +44,11 @@ class AdminHomePage extends StatelessWidget {
 
           IconButton(
             icon: const Icon(Icons.account_circle_outlined),
-
             tooltip: 'Profil Petugas',
 
             onPressed: () {
-              // Membuka halaman profil petugas
               Navigator.push(
                 context,
-
                 MaterialPageRoute(
                   builder: (context) => const AdminProfilePage(),
                 ),
@@ -63,13 +59,12 @@ class AdminHomePage extends StatelessWidget {
           // ==================================================
           // TOMBOL LOGOUT
           // ==================================================
+
           IconButton(
             icon: const Icon(Icons.logout),
-
             tooltip: 'Logout',
 
             onPressed: () {
-              // Menampilkan dialog konfirmasi logout
               _showLogoutDialog(context);
             },
           ),
@@ -79,6 +74,7 @@ class AdminHomePage extends StatelessWidget {
       // ======================================================
       // BODY
       // ======================================================
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -92,53 +88,51 @@ class AdminHomePage extends StatelessWidget {
 
             const Text(
               'Halo, Petugas Klinik 👋',
-
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
 
             const SizedBox(height: 5),
 
             const Text(
               'Selamat datang di Panel Petugas Klinik',
-
-              style: TextStyle(color: Colors.grey, fontSize: 14),
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 14,
+              ),
             ),
 
             const SizedBox(height: 25),
 
             // ==================================================
-            // INFORMASI ADMIN
+            // INFORMASI PETUGAS
             // ==================================================
+
             Container(
               width: double.infinity,
-
               padding: const EdgeInsets.all(20),
 
               decoration: BoxDecoration(
                 color: Colors.blue,
-
                 borderRadius: BorderRadius.circular(20),
               ),
 
               child: const Row(
                 children: [
-                  // ==================================================
-                  // ICON
-                  // ==================================================
+                  // ICON PETUGAS
 
                   Icon(
                     Icons.admin_panel_settings,
-
                     color: Colors.white,
-
                     size: 45,
                   ),
 
                   SizedBox(width: 15),
 
-                  // ==================================================
-                  // TEXT
-                  // ==================================================
+                  // KETERANGAN PETUGAS
+
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,12 +140,9 @@ class AdminHomePage extends StatelessWidget {
                       children: [
                         Text(
                           'Panel Petugas',
-
                           style: TextStyle(
                             color: Colors.white,
-
                             fontSize: 19,
-
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -160,8 +151,10 @@ class AdminHomePage extends StatelessWidget {
 
                         Text(
                           'Kelola data dan pelayanan klinik melalui halaman ini.',
-
-                          style: TextStyle(color: Colors.white70, fontSize: 13),
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 13,
+                          ),
                         ),
                       ],
                     ),
@@ -175,10 +168,37 @@ class AdminHomePage extends StatelessWidget {
             // ==================================================
             // JUDUL MENU
             // ==================================================
+
             const Text(
               'Menu Petugas',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+            const SizedBox(height: 15),
+
+            // ==================================================
+            // MENU DASHBOARD STATISTIK - BARU
+            // ==================================================
+
+            MenuCard(
+              icon: Icons.analytics_outlined,
+              title: 'Dashboard Statistik',
+              subtitle:
+                  'Melihat statistik pasien dan antrean klinik',
+
+              onTap: () {
+                // Membuka halaman dashboard statistik
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const AdminDashboardPage(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 15),
@@ -186,19 +206,19 @@ class AdminHomePage extends StatelessWidget {
             // ==================================================
             // MENU KONSULTASI
             // ==================================================
+
             MenuCard(
               icon: Icons.medical_services,
-
               title: 'Kelola Konsultasi',
-
-              subtitle: 'Melihat dan mengelola konsultasi pasien',
+              subtitle:
+                  'Melihat dan mengelola konsultasi pasien',
 
               onTap: () {
                 Navigator.push(
                   context,
-
                   MaterialPageRoute(
-                    builder: (context) => const AdminKonsultasiPage(),
+                    builder: (context) =>
+                        const AdminKonsultasiPage(),
                   ),
                 );
               },
@@ -209,20 +229,19 @@ class AdminHomePage extends StatelessWidget {
             // ==================================================
             // MENU ANTREAN
             // ==================================================
+
             MenuCard(
               icon: Icons.confirmation_number,
-
               title: 'Kelola Antrean',
-
-              subtitle: 'Melihat dan mengelola antrean pasien',
+              subtitle:
+                  'Melihat dan mengelola antrean pasien',
 
               onTap: () {
-                // Membuka halaman kelola antrean
                 Navigator.push(
                   context,
-
                   MaterialPageRoute(
-                    builder: (context) => const AdminAntreanPage(),
+                    builder: (context) =>
+                        const AdminAntreanPage(),
                   ),
                 );
               },
@@ -233,20 +252,19 @@ class AdminHomePage extends StatelessWidget {
             // ==================================================
             // MENU DATA PASIEN
             // ==================================================
+
             MenuCard(
               icon: Icons.people,
-
               title: 'Data Pasien',
-
-              subtitle: 'Melihat data pengguna atau pasien',
+              subtitle:
+                  'Melihat data pengguna atau pasien',
 
               onTap: () {
-                // Membuka halaman data pasien
                 Navigator.push(
                   context,
-
                   MaterialPageRoute(
-                    builder: (context) => const AdminDataPasienPage(),
+                    builder: (context) =>
+                        const AdminDataPasienPage(),
                   ),
                 );
               },
@@ -257,22 +275,19 @@ class AdminHomePage extends StatelessWidget {
             // ==================================================
             // INFORMASI
             // ==================================================
+
             Container(
               width: double.infinity,
-
               padding: const EdgeInsets.all(18),
 
               decoration: BoxDecoration(
                 color: Colors.white,
-
                 borderRadius: BorderRadius.circular(18),
 
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withValues(alpha: 0.12),
-
                     blurRadius: 10,
-
                     offset: const Offset(0, 4),
                   ),
                 ],
@@ -282,25 +297,28 @@ class AdminHomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-                  // ==================================================
                   // ICON INFORMASI
-                  // ==================================================
 
-                  Icon(Icons.info_outline, color: Colors.blue),
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.blue,
+                  ),
 
                   SizedBox(width: 12),
 
-                  // ==================================================
-                  // TEXT INFORMASI
-                  // ==================================================
+                  // KETERANGAN INFORMASI
+
                   Expanded(
                     child: Text(
                       'Petugas dapat mengelola pelayanan '
                       'klinik melalui menu yang tersedia. '
-                      'Fitur tambahan dapat ditambahkan '
-                      'sesuai kebutuhan sistem.',
+                      'Dashboard statistik membantu petugas '
+                      'memantau jumlah pasien dan antrean klinik.',
 
-                      style: TextStyle(fontSize: 13, color: Colors.grey),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ],
@@ -322,66 +340,50 @@ class AdminHomePage extends StatelessWidget {
 
       builder: (dialogContext) {
         return AlertDialog(
-          // ==================================================
-          // JUDUL
-          // ==================================================
+          // JUDUL DIALOG
 
           title: const Text(
             'Logout',
-
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
 
-          // ==================================================
-          // ISI
-          // ==================================================
+          // ISI DIALOG
+
           content: const Text(
             'Apakah Anda yakin ingin keluar dari akun petugas?',
           ),
 
-          // ==================================================
-          // TOMBOL
-          // ==================================================
+          // TOMBOL DIALOG
+
           actions: [
-            // =================================================
-            // BATAL
-            // =================================================
+            // TOMBOL BATAL
 
             TextButton(
               onPressed: () {
                 Navigator.pop(dialogContext);
               },
-
               child: const Text('Batal'),
             ),
 
-            // =================================================
-            // LOGOUT
-            // =================================================
+            // TOMBOL LOGOUT
+
             ElevatedButton(
               onPressed: () async {
-                // =============================================
-                // TUTUP DIALOG
-                // =============================================
-
+                // Tutup dialog
                 Navigator.pop(dialogContext);
 
-                // =============================================
-                // LOGOUT DARI FIREBASE AUTH
-                // =============================================
-
+                // Logout dari Firebase Authentication
                 await FirebaseAuth.instance.signOut();
 
-                // =============================================
-                // KEMBALI KE LOGIN
-                // =============================================
-
+                // Kembali ke halaman login
                 if (context.mounted) {
                   Navigator.pushAndRemoveUntil(
                     context,
-
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
                     (route) => false,
                   );
                 }
@@ -389,7 +391,6 @@ class AdminHomePage extends StatelessWidget {
 
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-
                 foregroundColor: Colors.white,
               ),
 
