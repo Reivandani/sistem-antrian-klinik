@@ -1,27 +1,56 @@
+
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Warna utama aplikasi
-  static const Color primary = Color(0xFF2196F3);
+  // ==========================================
+  // WARNA UTAMA APLIKASI
+  // ==========================================
 
-  // Warna background
-  static const Color background = Color(0xFFF5F7FA);
+  // Biru utama untuk tombol dan elemen penting.
+  static const Color primary = Color(0xFF1769AA);
 
-  // Warna teks utama
-  static const Color textPrimary = Color(0xFF222222);
+  // Biru gelap untuk judul dan elemen penekanan.
+  static const Color primaryDark = Color(0xFF104B7A);
 
-  // Warna teks sekunder
-  static const Color textSecondary = Colors.grey;
+  // Biru muda untuk background ikon dan kartu.
+  static const Color primaryLight = Color(0xFFE8F3FC);
 
-  // Warna putih
+  // ==========================================
+  // WARNA BACKGROUND
+  // ==========================================
+
+  // Background utama halaman.
+  static const Color background = Color(0xFFF4F8FC);
+
+  // Background kartu dan komponen.
+  static const Color surface = Colors.white;
+
+  // ==========================================
+  // WARNA TEKS
+  // ==========================================
+
+  // Teks utama seperti judul dan nama poli.
+  static const Color textPrimary = Color(0xFF172B4D);
+
+  // Teks sekunder seperti deskripsi.
+  static const Color textSecondary = Color(0xFF6B7A90);
+
+  // ==========================================
+  // WARNA PENDUKUNG
+  // ==========================================
+
+  // Warna putih.
   static const Color white = Colors.white;
 
-  // Warna status berhasil
-  static const Color success = Colors.green;
+  // Garis pembatas dan border kartu.
+  static const Color border = Color(0xFFE2EAF2);
 
-  // Warna status menunggu
-  static const Color warning = Colors.orange;
+  // Status berhasil.
+  static const Color success = Color(0xFF16845B);
 
-  // Warna status dibatalkan
-  static const Color danger = Colors.red;
+  // Status menunggu.
+  static const Color warning = Color(0xFFF59E0B);
+
+  // Status gagal atau dibatalkan.
+  static const Color danger = Color(0xFFDC3545);
 }
