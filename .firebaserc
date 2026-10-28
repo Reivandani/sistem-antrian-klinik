@@ -2,6 +2,14 @@
   "projects": {
     "default": "sistem-antrean-klinik-7a8cc"
   },
-  "targets": {},
+  "targets": {
+    "sistem-antrean-klinik-7a8cc": {
+      "hosting": {
+        "klinikbaru": [
+          "sistemantreanklinik-reivandani422"
+        ]
+      }
+    }
+  },
   "etags": {}
 }

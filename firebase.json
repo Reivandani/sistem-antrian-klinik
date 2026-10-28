@@ -1,3 +1,4 @@
+
 {
   "flutter": {
     "platforms": {
@@ -23,6 +24,7 @@
     }
   },
   "hosting": {
+    "target": "klinikbaru",
     "public": "build/web",
     "ignore": [
       "firebase.json",
