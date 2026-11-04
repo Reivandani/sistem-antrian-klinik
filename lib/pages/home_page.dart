@@ -26,7 +26,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       // ==========================================================
       // APP BAR
       // ==========================================================
@@ -40,17 +39,16 @@ class HomePage extends StatelessWidget {
         ),
 
         actions: [
-
           // ========================================================
-          // TOMBOL ABOUT ME
+          // TOMBOL ABOUT US (KELOMPOK)
           // ========================================================
 
           IconButton(
             icon: const Icon(
-              Icons.account_circle_outlined,
+              Icons.groups, // Menggunakan ikon grup
             ),
 
-            tooltip: 'About Me',
+            tooltip: 'Tentang Kelompok',
 
             onPressed: () {
               Navigator.push(
@@ -103,7 +101,6 @@ class HomePage extends StatelessWidget {
 
       body: CustomScrollView(
         slivers: [
-
           // ========================================================
           // BAGIAN ATAS
           // ========================================================
@@ -122,7 +119,6 @@ class HomePage extends StatelessWidget {
                     CrossAxisAlignment.start,
 
                 children: [
-
                   // ==================================================
                   // GREETING
                   // ==================================================
@@ -239,7 +235,6 @@ class HomePage extends StatelessWidget {
         context,
         snapshot,
       ) {
-
         // ======================================================
         // LOADING
         // ======================================================
@@ -283,12 +278,10 @@ class HomePage extends StatelessWidget {
             antreanSaya;
 
         if (snapshot.hasData) {
-
           for (
             final doc
                 in snapshot.data!.docs
           ) {
-
             final Map<String, dynamic>
                 data =
                 doc.data()
@@ -302,7 +295,6 @@ class HomePage extends StatelessWidget {
               status == 'Menunggu' ||
               status == 'Dipanggil'
             ) {
-
               antreanSaya = doc;
 
               break;
@@ -361,7 +353,6 @@ class HomePage extends StatelessWidget {
             context,
             currentSnapshot,
           ) {
-
             String nomorDilayani = '-';
 
             if (
@@ -371,7 +362,6 @@ class HomePage extends StatelessWidget {
                   .docs
                   .isNotEmpty
             ) {
-
               final Map<String, dynamic>
                   currentData =
                   currentSnapshot
@@ -409,7 +399,6 @@ class HomePage extends StatelessWidget {
                     CrossAxisAlignment.start,
 
                 children: [
-
                   // ==============================================
                   // JUDUL
                   // ==============================================
@@ -447,7 +436,6 @@ class HomePage extends StatelessWidget {
                         MainAxisAlignment.spaceBetween,
 
                     children: [
-
                       // ==========================================
                       // NOMOR USER
                       // ==========================================
@@ -457,7 +445,6 @@ class HomePage extends StatelessWidget {
                             CrossAxisAlignment.start,
 
                         children: [
-
                           const Text(
                             'Nomor Anda',
 
@@ -497,7 +484,6 @@ class HomePage extends StatelessWidget {
                             CrossAxisAlignment.start,
 
                         children: [
-
                           const Text(
                             'Sedang Dilayani',
 
@@ -557,7 +543,6 @@ class HomePage extends StatelessWidget {
 
                     child: Row(
                       children: [
-
                         Icon(
                           status == 'Dipanggil'
                               ? Icons.campaign
@@ -619,7 +604,6 @@ class HomePage extends StatelessWidget {
             CrossAxisAlignment.start,
 
         children: [
-
           Text(
             'Informasi Antrean Anda',
 
@@ -635,7 +619,6 @@ class HomePage extends StatelessWidget {
 
           Row(
             children: [
-
               Icon(
                 Icons.confirmation_number_outlined,
 
@@ -671,17 +654,14 @@ class HomePage extends StatelessWidget {
   Widget _buildMenuGrid(
     BuildContext context,
   ) {
-
     return Column(
       children: [
-
         // ========================================================
         // BARIS 1
         // ========================================================
 
         Row(
           children: [
-
             Expanded(
               child: _buildMenuCard(
                 icon:
@@ -694,7 +674,6 @@ class HomePage extends StatelessWidget {
                     'Ambil nomor antrean',
 
                 onTap: () {
-
                   Navigator.push(
                     context,
 
@@ -723,7 +702,6 @@ class HomePage extends StatelessWidget {
                     'Konsultasi dengan dokter',
 
                 onTap: () {
-
                   Navigator.push(
                     context,
 
@@ -751,7 +729,6 @@ class HomePage extends StatelessWidget {
 
         Row(
           children: [
-
             Expanded(
               child: _buildMenuCard(
                 icon:
@@ -764,7 +741,6 @@ class HomePage extends StatelessWidget {
                     'Lihat riwayat antrean',
 
                 onTap: () {
-
                   Navigator.push(
                     context,
 
@@ -793,7 +769,6 @@ class HomePage extends StatelessWidget {
                     'Lihat riwayat konsultasi',
 
                 onTap: () {
-
                   Navigator.push(
                     context,
 
@@ -813,15 +788,6 @@ class HomePage extends StatelessWidget {
 
   // ============================================================
   // DATA POLI UNTUK KONSULTASI
-  // ============================================================
-  //
-  // Daftar poli sudah tidak ditampilkan di HomePage.
-  //
-  // Tetapi KonsultasiPage masih membutuhkan parameter
-  // daftarPoli. Oleh karena itu data poli untuk konsultasi
-  // dibuat melalui method ini.
-  //
-  // Data ini TIDAK ditampilkan di HomePage.
   // ============================================================
 
   List<Poli> _getDaftarPoli() {
@@ -868,7 +834,6 @@ class HomePage extends StatelessWidget {
     required String subtitle,
     required VoidCallback onTap,
   }) {
-
     return GestureDetector(
       onTap: onTap,
 
@@ -902,7 +867,6 @@ class HomePage extends StatelessWidget {
               CrossAxisAlignment.start,
 
           children: [
-
             // ====================================================
             // ICON
             // ====================================================
@@ -1021,7 +985,6 @@ class HomePage extends StatelessWidget {
             CrossAxisAlignment.start,
 
         children: [
-
           Icon(
             Icons.info_outline,
 
