@@ -12,27 +12,21 @@ class AboutMePage extends StatelessWidget {
       {
         'nama': 'Purnama Riyan Suprapto',
         'nim': '25051204436',
-        'peran': 'Ketua / Backend Developer',
       },
       {
-        'nama': 'Wahyu Septiya Ardana',
-        'nim': '25051204418',
-        'peran': 'UI/UX Designer',
+       
       },
       {
         'nama': 'Reivandani Aji Prakoso',
         'nim': '25051204422',
-        'peran': 'Frontend Developer',
       },
       {
         'nama': 'Maulana Halim',
         'nim': '25051204386',
-        'peran': 'Database & Firebase',
+ 
       },
       {
-        'nama': 'Rendy Nur Jamal Prasetyo',
-        'nim': '25051204328',
-        'peran': 'Quality Assurance / Tester',
+        
       },
     ];
 
