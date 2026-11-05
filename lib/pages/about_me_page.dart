@@ -14,7 +14,6 @@ class AboutMePage extends StatelessWidget {
         'nim': '25051204436',
       },
       {
-       
       },
       {
         'nama': 'Reivandani Aji Prakoso',
